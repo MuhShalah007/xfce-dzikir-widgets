@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# Dzikir Popup CLI Controller
+
+SCRIPT_PATH="$HOME/.config/xfce-dzikir-widgets/dzikir_popup.py"
+if [ ! -f "$SCRIPT_PATH" ]; then
+  SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/dzikir_popup.py"
+fi
+
+case "$1" in
+  start)
+    if pgrep -f "dzikir_popup.py" >/dev/null; then
+      echo "dzikir-popup: already running."
+    else
+      nohup python3 "$SCRIPT_PATH" "${2:-9}" "${3:-7}" >/dev/null 2>&1 &
+      echo "dzikir-popup: started."
+    fi
+    ;;
+  stop)
+    pkill -f "dzikir_popup.py"
+    echo "dzikir-popup: stopped."
+    ;;
+  restart)
+    pkill -f "dzikir_popup.py"
+    sleep 0.5
+    nohup python3 "$SCRIPT_PATH" "${2:-9}" "${3:-7}" >/dev/null 2>&1 &
+    echo "dzikir-popup: restarted."
+    ;;
+  status)
+    if pgrep -f "dzikir_popup.py" >/dev/null; then
+      echo "dzikir-popup: RUNNING (PID: $(pgrep -f "dzikir_popup.py" | tr '\n' ' '))"
+    else
+      echo "dzikir-popup: STOPPED"
+    fi
+    ;;
+  *)
+    echo "Usage: dzikir-popup {start|stop|restart|status} [display_seconds] [cooldown_seconds]"
+    exit 1
+    ;;
+esac

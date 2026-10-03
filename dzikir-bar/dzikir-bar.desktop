@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Dzikir Bar Overlay
+Comment=Continuous scrolling Arabic dzikir overlay
+Exec=dzikir-bar start 0 36 1.5
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+StartupNotify=false
+Terminal=false
+Categories=Utility;

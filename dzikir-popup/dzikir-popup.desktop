@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Dzikir Popup Notification
+Comment=Telegram-style periodic Dzikir popup
+Exec=dzikir-popup start 9 7
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+StartupNotify=false
+Terminal=false
+Categories=Utility;

@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# Dzikir Bar CLI Controller
+
+SCRIPT_PATH="$HOME/.config/xfce-dzikir-widgets/dzikir_bar.py"
+if [ ! -f "$SCRIPT_PATH" ]; then
+  SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/dzikir_bar.py"
+fi
+
+case "$1" in
+  start)
+    if pgrep -f "dzikir_bar.py" >/dev/null; then
+      echo "dzikir-bar: already running."
+    else
+      nohup python3 "$SCRIPT_PATH" "${2:-0}" "${3:-36}" "${4:-1.5}" >/dev/null 2>&1 &
+      echo "dzikir-bar: started."
+    fi
+    ;;
+  stop)
+    pkill -f "dzikir_bar.py"
+    echo "dzikir-bar: stopped."
+    ;;
+  restart)
+    pkill -f "dzikir_bar.py"
+    sleep 0.5
+    nohup python3 "$SCRIPT_PATH" "${2:-0}" "${3:-36}" "${4:-1.5}" >/dev/null 2>&1 &
+    echo "dzikir-bar: restarted."
+    ;;
+  status)
+    if pgrep -f "dzikir_bar.py" >/dev/null; then
+      echo "dzikir-bar: RUNNING (PID: $(pgrep -f "dzikir_bar.py" | tr '\n' ' '))"
+    else
+      echo "dzikir-bar: STOPPED"
+    fi
+    ;;
+  *)
+    echo "Usage: dzikir-bar {start|stop|restart|status} [y_offset] [height] [scroll_speed]"
+    exit 1
+    ;;
+esac
